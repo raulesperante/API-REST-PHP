@@ -8,7 +8,7 @@
  * 
  * $_GET['url'] trae la url actual
  * 
- * Pregunta con los namespaces hay que hacer require_one ?
+ * 
  * 
  */
 
@@ -47,19 +47,48 @@ if (isset($_GET['url'])) {
         
         // Trae el body de la request sin formatear
         $postBody = file_get_contents('php://input');
-        print_r(json_decode($postBody));
-        //print_r(json_decode($postBody));
-        //$postBody = json_decode($postBody);
-        //print_r($postBody);
-        http_response_code(200);
+        $conver = json_decode($postBody, true);
+        // Si no hubo error al convertir a json
+        if(json_last_error() == 0){
+            switch ($var) {
+                case 'productos':
+                    CrearProducto($conver);
+    
+                    http_response_code(200);      
+                break;
+                default;
+            }
+        }else{
+            http_response_code(400);
+        }
+
+
+
     } else {
         http_response_code(405);
     }
 }else{
-    // metadata
-    
-}
+    ?>
+    <!-- Parte html -->
+    <link rel="stylesheet" href="public/estilo.css" type="text/css">
+    <div class="container">
+        <h1>Metadata</h1>
+        <div class="divbody">
+            <p>Productos</p>
+            <code>
+                POST /productos
+            </code>
+            <code>
+                GET /productos
+                <br>
+                GET /productos/id
+            </code>
+        </div>
 
+    </div>
+
+<?php    
+}
 
 
 /*
@@ -76,3 +105,4 @@ if (isset($_GET['url'])) {
 }
 
  */
+ ?>

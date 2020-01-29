@@ -19,7 +19,8 @@ function NonQuery($sqlstr, $conexion = null){
     if(!$conexion) global $conexion;
     
     $result = $conexion->query($sqlstr);
-    return $result->affect_row;
+
+    return $conexion->affected_rows;
     
 }
 
